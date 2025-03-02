@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,12 +6,78 @@ datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
+
 model Users {
   id        String @id @default(uuid())
   name      String
   email     String @unique
   location  String
   password  String
-  role      String  
+  role      String @default("user")
+  reports   IncidentReport[]
+  createdPolls Poll[] @relation("PollCreator") 
+  votes      PollVote[]
+
 }
+
+model IncidentReport {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  location    String
+  status      String @default("pending")
+  category    String 
+  userId      String
+  user        Users @relation(fields: [userId], references: [id], onDelete: NoAction)
+  media       IncidentMedia[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model IncidentMedia {
+  id         String @id @default(uuid())
+  url        String
+  type       String
+  incidentId String
+  incident   IncidentReport @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  uploadedAt DateTime @default(now())
+}
+
+
+model Poll {
+  id          String   @id @default(uuid()) 
+  question    String   
+  description String?  
+  options     PollOption[] 
+  status      String @default("unverified") 
+  createdBy   String   
+  creator     Users    @relation(fields: [createdBy], references: [id], onDelete: NoAction, name: "PollCreator")  
+  createdAt   DateTime @default(now()) 
+  expiresAt   DateTime?  
+  votes       PollVote[]
+
+  @@map("polls")
+}
+
+model PollOption {
+  id       String   @id @default(uuid()) 
+  text     String   
+  pollId   String   
+  poll     Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes    PollVote[]
+
+}
+
+model PollVote {
+  id        String   @id @default(uuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  pollId    String
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  optionId  String
+  option    PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollId]) 
+}
+
 
