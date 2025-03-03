@@ -5,7 +5,7 @@ import asyncHandler  from "../middlewares/asyncHandler.js";
 import ErrorResponse from "../utils/ErrorResponse.js";
 
 export const register = asyncHandler(async (req, res, next) => {
-    const { name, email, password, location, role } = req.body;
+    const { name, email, password, location } = req.body;
     const hashedPassword = await hashPassword(password);
 
     const user = await prisma.users.create({
@@ -13,22 +13,11 @@ export const register = asyncHandler(async (req, res, next) => {
             name,
             email,
             password: hashedPassword,
-            location,
-            role,
+            location
         },
     });
-
-    const token = await jwt.sign(
-        { id: user.id },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_EXPIRATION,
-        }
-    );
-
     res.status(201).json({
         message: "User registered successfully!",
-        token
     });
 });
 
@@ -57,6 +46,13 @@ export const login = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
         message: "User logged in successfully!",
-        token
+        token,
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            location: user.location,
+            role: user.role
+        },
     });
 });

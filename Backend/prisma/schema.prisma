@@ -17,7 +17,6 @@ model Users {
   reports   IncidentReport[]
   createdPolls Poll[] @relation("PollCreator") 
   votes      PollVote[]
-
 }
 
 model IncidentReport {
@@ -42,7 +41,6 @@ model IncidentMedia {
   incident   IncidentReport @relation(fields: [incidentId], references: [id], onDelete: Cascade)
   uploadedAt DateTime @default(now())
 }
-
 
 model Poll {
   id          String   @id @default(uuid()) 
