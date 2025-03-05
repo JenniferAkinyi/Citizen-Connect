@@ -9,6 +9,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(null);
+    setLoading(true);
 
     try {
       const response = await login(email, password);
@@ -34,16 +36,16 @@ const Login = () => {
       localStorage.setItem("isLoggedIn", "true");
       if (user.role === "admin") {
         navigate("/admindashboard");
-      } 
-      else if (user.role === "official") {
+      } else if (user.role === "official") {
         navigate("/officialdashboard");
-      }
-      else{
+      } else {
         navigate("/dashboard");
       }
     } catch (error) {
       console.error("Login error:", error);
       setErrorMessage("Invalid email or password.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,6 +62,7 @@ const Login = () => {
               name="email"
               value={email}
               onChange={handleInputChange}
+              required
             />
             {emailError && <div className="error-message">{emailError}</div>}
           </div>
@@ -70,14 +73,22 @@ const Login = () => {
               name="password"
               value={password}
               onChange={handleInputChange}
+              required
             />
             {passwordError && <div className="error-message">{passwordError}</div>}
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
           <p className="account">
             Don't have an account?{" "}
             <Link to="/signup" className="signup-link">
               Sign up
+            </Link>
+          </p>
+          <p className="reset-password">
+            <Link to="/request-password-reset" className="reset-link">
+              Forgot password?
             </Link>
           </p>
         </form>

@@ -8,74 +8,73 @@ datasource db {
 }
 
 model Users {
-  id        String @id @default(uuid())
-  name      String
-  email     String @unique
-  location  String
-  password  String
-  role      String @default("user")
-  reports   IncidentReport[]
-  createdPolls Poll[] @relation("PollCreator") 
-  votes      PollVote[]
+  id               String           @id @default(uuid())
+  name             String
+  email            String           @unique
+  location         String
+  password         String
+  role             String           @default("user")
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  reports          IncidentReport[]
+  createdPolls     Poll[]           @relation("PollCreator")
+  votes            PollVote[]
 }
 
 model IncidentReport {
-  id          String @id @default(uuid())
+  id          String          @id @default(uuid())
   title       String
   description String
   location    String
-  status      String @default("pending")
-  category    String 
+  status      String          @default("pending")
   userId      String
-  user        Users @relation(fields: [userId], references: [id], onDelete: NoAction)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  category    String
   media       IncidentMedia[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  user        Users           @relation(fields: [userId], references: [id])
 }
 
 model IncidentMedia {
-  id         String @id @default(uuid())
+  id         String         @id @default(uuid())
   url        String
   type       String
   incidentId String
+  uploadedAt DateTime       @default(now())
   incident   IncidentReport @relation(fields: [incidentId], references: [id], onDelete: Cascade)
-  uploadedAt DateTime @default(now())
 }
 
 model Poll {
-  id          String   @id @default(uuid()) 
-  question    String   
-  description String?  
-  options     PollOption[] 
-  status      String @default("unverified") 
-  createdBy   String   
-  creator     Users    @relation(fields: [createdBy], references: [id], onDelete: NoAction, name: "PollCreator")  
-  createdAt   DateTime @default(now()) 
-  expiresAt   DateTime?  
+  id          String       @id @default(uuid())
+  question    String
+  description String?
+  status      String       @default("unverified")
+  createdBy   String
+  createdAt   DateTime     @default(now())
+  expiresAt   DateTime?
+  options     PollOption[]
+  creator     Users        @relation("PollCreator", fields: [createdBy], references: [id])
   votes       PollVote[]
 
   @@map("polls")
 }
 
 model PollOption {
-  id       String   @id @default(uuid()) 
-  text     String   
-  pollId   String   
-  poll     Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  votes    PollVote[]
-
+  id     String     @id @default(uuid())
+  text   String
+  pollId String
+  poll   Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes  PollVote[]
 }
 
 model PollVote {
-  id        String   @id @default(uuid())
-  userId    String
-  user      Users    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  pollId    String
-  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  optionId  String
-  option    PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  id       String     @id @default(uuid())
+  userId   String
+  pollId   String
+  optionId String
+  option   PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  poll     Poll       @relation(fields: [pollId], references: [id], onUpdate: NoAction)
+  user     Users      @relation(fields: [userId], references: [id], onUpdate: NoAction)
 
-  @@unique([userId, pollId]) 
+  @@unique([userId, pollId])
 }
-
-

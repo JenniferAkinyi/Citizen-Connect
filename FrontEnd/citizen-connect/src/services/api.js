@@ -22,6 +22,14 @@ export const login = async (email, password) => {
     });
     return response;
 }
+export const requestPasswordReset = async ( data) => {
+  const response = await api.post('/users/request-password-reset', data);
+  return response;
+};
+export const resetPassword = async (data) => {
+  const response = await api.put(`/users/reset-password`, data);
+  return response;
+};
 export const fetchIncidents = async () => {
   const response = await api.get('/incidents/all');
   return response.data;

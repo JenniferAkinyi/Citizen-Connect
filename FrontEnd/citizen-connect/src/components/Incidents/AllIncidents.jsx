@@ -26,7 +26,14 @@ const AllIncidents = () => {
             incidents.map((incident) => (
               <div key={incident.id} className="incidents-report-card-item">
                 {incident.media.length > 0 && (
-                  <img src={incident.media[0].url} alt="incident" />
+                  incident.media[0].type === "video" ? (
+                    <video controls>
+                      <source src={incident.media[0].url} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img src={incident.media[0].url} alt="incident" />
+                  )
                 )}
                 <h4>Title: {incident.title}</h4>
                 <p>Description: {incident.description}</p>

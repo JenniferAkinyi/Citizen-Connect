@@ -20,6 +20,9 @@ import OfficialRoute from "./components/OfficialRoute/OfficialRoute";
 import OfficialScreen from "./screens/officialDashboard/OfficialScreen";
 import Summary from "./components/OfficialPage/Summary/Summary";
 import IncidentDetails from "./components/OfficialPage/IncidentDetails/IncidentDetails";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
+import RequestPasswordReset from "./components/RequestReset/RequestPasswordReset";
+import AIChat from "./components/AIChat/AIChat";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -38,12 +41,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/request-password-reset" element={<RequestPasswordReset />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route element={<BaseLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/incident" element={<Incident />} />
             <Route path="/poll" element={<Polls />} />
             <Route path="/allincidents" element={<AllIncidents />} />
+            <Route path="/chat" element={<AIChat />} />
             <Route
               path="/admindashboard"
               element={

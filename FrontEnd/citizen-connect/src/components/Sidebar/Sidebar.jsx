@@ -126,6 +126,18 @@ const Sidebar = () => {
           <ul className='menu-list'>
             {user?.role === 'user' && (
               <li className='menu-item'>
+                <NavLink to='/chat' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineSummarize size={18}/>
+                  </span>
+                  <span className='menu-link-text'>AI ChatBot</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
                 <NavLink to='/profile' className='menu-link' activeclassname='active'>
                   <span className='menu-link-icon'>
                     <MdOutlinePeople size={18}/>
