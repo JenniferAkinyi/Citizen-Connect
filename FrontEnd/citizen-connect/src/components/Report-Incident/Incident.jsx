@@ -15,9 +15,9 @@ const Incident = () => {
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedInUser && loggedInUser.user.id) {
-      setUserId(loggedInUser.user.id);
-      setLocation(loggedInUser.user.location); 
+    if (loggedInUser && loggedInUser.id) {
+      setUserId(loggedInUser.id);
+      setLocation(loggedInUser.location); 
     } else {
       console.error(error);
     }

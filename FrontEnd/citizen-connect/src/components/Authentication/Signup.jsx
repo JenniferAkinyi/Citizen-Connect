@@ -60,7 +60,7 @@ const Signup = () => {
         });
 
         setTimeout(() => {
-          navigate("/login");
+          navigate("/");
         }, 500);
       } else {
         throw new Error("Failed to register user");

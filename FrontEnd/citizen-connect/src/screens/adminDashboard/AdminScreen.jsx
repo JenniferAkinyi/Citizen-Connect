@@ -1,6 +1,7 @@
 import React from "react";
-import { AreaCards,  AreaTable } from "../../components";
+import { AreaCards, AreaTable, CreatePoll } from "../../components";
 import AreaTopAdmin from "../../components/AdminPages/AdminDashboard/AreaTopAdmin/AdminDash";
+import PollMng from "../../components/AdminPages/PollManagement/PollMng";
 
 const AdminScreen = () => {
   return (

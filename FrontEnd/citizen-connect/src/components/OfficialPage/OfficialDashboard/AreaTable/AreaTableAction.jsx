@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-const AreaTableAction = () => {
+const AreaTableAction = ({ incidentId }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const handleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -19,7 +19,7 @@ const AreaTableAction = () => {
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -35,18 +35,13 @@ const AreaTableAction = () => {
           <div className="action-dropdown-menu" ref={dropdownRef}>
             <ul className="dropdown-menu-list">
               <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
+                <Link to={`/view/${incidentId}`} className="dropdown-menu-link">
                   View
                 </Link>
               </li>
               <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
-                  Edit
-                </Link>
-              </li>
-              <li className="dropdown-menu-item">
-                <Link to="/view" className="dropdown-menu-link">
-                  Delete
+                <Link to={`/summary/${incidentId}`} className="dropdown-menu-link">
+                  Summary
                 </Link>
               </li>
             </ul>

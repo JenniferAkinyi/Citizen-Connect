@@ -5,6 +5,10 @@ import ErrorResponse from "../utils/ErrorResponse.js";
 
 export const createPoll = asyncHandler(async(req, res, next) =>{
     const { question, description, options, status, createdBy, expiresAt } = req.body
+
+    if (!options || !Array.isArray(options)) {
+        return res.status(400).json({ error: "Options must be an array" });
+    }
     const poll = await prisma.poll.create({
         data: {
             question, 
@@ -31,13 +35,20 @@ export const allPolls = asyncHandler(async(req, res, next) => {
             options: true
         }
     })
-    if(polls.length === 0){
-        return next(new ErrorResponse("No available poll"))
+    if (!polls || !Array.isArray(polls)) {
+        return res.status(404).json({ success: false, error: 'No polls found' });
     }
     res.status(201).json({
         message: "Polls fetches successfully",
-        data: polls
-    })
+        data: polls.map(poll => ({
+            id: poll.id,
+            question: poll.question,
+            description: poll.description,
+            options: poll.options,
+            expiresAt: poll.expiresAt,
+            createdAt: poll.createdAt,
+        })),
+    });
 })
 export const fetchById = asyncHandler(async(req, res, next) => {
     const { id } = req.params

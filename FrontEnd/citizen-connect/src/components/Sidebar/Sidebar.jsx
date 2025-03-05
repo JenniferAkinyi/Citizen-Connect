@@ -9,7 +9,9 @@ import {
   MdOutlineLogin,
   MdOutlineLogout,
   MdOutlinePeople,
-  MdOutlinePoll
+  MdOutlinePoll,
+  MdPlusOne,
+  MdOutlineSummarize
 } from 'react-icons/md';
 import './Sidebar.css';
 import { NavLink, useNavigate } from "react-router-dom";
@@ -74,54 +76,136 @@ const Sidebar = () => {
       <div className="sidebar-body">
         <div className="sidebar-menu">
           <ul className='menu-list'>
-            <li className='menu-item'>
-              <NavLink to='/dashboard' className='menu-link' activeclassname='active'>
-                <span className='menu-link-icon'>
-                  <MdOutlineGridView size={18}/>
-                </span>
-                <span className='menu-link-text'>Home</span>
-              </NavLink>
-            </li>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
+                <NavLink to='/dashboard' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineGridView size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Home</span>
+                </NavLink>
+              </li>
+            )}
           </ul>
           <ul className='menu-list'>
-            <li className='menu-item'>
-              <NavLink to='/incident' className='menu-link' activeclassname='active'>
-                <span className='menu-link-icon'>
-                  <MdOutlineCrisisAlert size={18}/>
-                </span>
-                <span className='menu-link-text'>Report Incident</span>
-              </NavLink>
-            </li>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
+                <NavLink to='/incident' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineCrisisAlert size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Report Incident</span>
+                </NavLink>
+              </li>
+            )}
           </ul>
           <ul className='menu-list'>
-            <li className='menu-item'>
-              <NavLink to='/poll' className='menu-link' activeclassname='active'>
-                <span className='menu-link-icon'>
-                  <MdOutlinePoll size={18}/>
-                </span>
-                <span className='menu-link-text'>Public Polls</span>
-              </NavLink>
-            </li>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
+                <NavLink to='/poll' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlinePoll size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Public Polls</span>
+                </NavLink>
+              </li>
+            )}
           </ul>
           <ul className='menu-list'>
-            <li className='menu-item'>
-              <NavLink to='/allincidents' className='menu-link' activeclassname='active'>
-                <span className='menu-link-icon'>
-                  <MdOutlineFolder size={18}/>
-                </span>
-                <span className='menu-link-text'>Reported Incidents</span>
-              </NavLink>
-            </li>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
+                <NavLink to='/allincidents' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineFolder size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Reported Incidents</span>
+                </NavLink>
+              </li>
+            )}
           </ul>
           <ul className='menu-list'>
-            <li className='menu-item'>
-              <NavLink to='/profile' className='menu-link' activeclassname='active'>
-                <span className='menu-link-icon'>
-                  <MdOutlinePeople size={18}/>
-                </span>
-                <span className='menu-link-text'>Profile</span>
-              </NavLink>
-            </li>
+            {user?.role === 'user' && (
+              <li className='menu-item'>
+                <NavLink to='/profile' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlinePeople size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Profile</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'admin' && (
+              <li className='menu-item'>
+                <NavLink to='/admindashboard' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineGridView size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Dashboard</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'admin' && (
+              <li className='menu-item'>
+                <NavLink to='/createpoll' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdPlusOne size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Create Poll</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'admin' && (
+              <li className='menu-item'>
+                <NavLink to='/managepoll' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlinePoll size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Poll Management</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'official' && (
+              <li className='menu-item'>
+                <NavLink to='/officialdashboard' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineGridView size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Dashboard</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'official' && (
+              <li className='menu-item'>
+                <NavLink to='/reportedincidents' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineCrisisAlert size={18}/>
+                  </span>
+                  <span className='menu-link-text'>Reported Incidents</span>
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <ul className='menu-list'>
+            {user?.role === 'official' && (
+              <li className='menu-item'>
+                <NavLink to='/summary' className='menu-link' activeclassname='active'>
+                  <span className='menu-link-icon'>
+                    <MdOutlineSummarize size={18}/>
+                  </span>
+                  <span className='menu-link-text'>AI Summary</span>
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
         <div className="sidebar-menu sidebar-menu2">

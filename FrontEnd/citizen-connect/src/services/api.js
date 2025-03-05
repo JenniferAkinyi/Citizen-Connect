@@ -30,7 +30,31 @@ export const reportIncident = async (incidentData) => {
   const response = await api.post('/incidents/report', incidentData);
   return response;
 };
+export const fetchIncidentById = async (incidentId) => {
+  const response = await api.get(`/incidents/${incidentId}`);
+  return response.data;
+};
 export const fetchPolls = async () => {
   const response = await api.get('polls/all');
   return response.data;
 }
+export const createPoll = async (pollData) => {
+  const response = await api.post('/polls/poll', pollData);
+  return response;
+}
+export const deletePoll = async (pollId) => {
+  const response = await api.delete(`/polls/${pollId}`);
+  return response;
+}
+export const pollVote = async (voteData) => {
+  const response = await api.get('/votes/all', voteData);
+  return response.data;
+}
+export const addVote = async (voteData) => {
+  const response = await api.post('/votes/vote', voteData);
+  return response;
+}
+export const fetchUserVotes = async (userId) => {
+  const response = await api.get(`/votes/user/${userId}`);
+  return response.data;
+};

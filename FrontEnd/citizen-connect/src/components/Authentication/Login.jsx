@@ -29,13 +29,16 @@ const Login = () => {
 
     try {
       const response = await login(email, password);
-      const user = response.data;
-      console.log("Login successful");
+      const user = response.data.user;
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("isLoggedIn", "true");
-      if (user.Role === "Admin") {
-        navigate("/dashboard");
-      } else {
+      if (user.role === "admin") {
+        navigate("/admindashboard");
+      } 
+      else if (user.role === "official") {
+        navigate("/officialdashboard");
+      }
+      else{
         navigate("/dashboard");
       }
     } catch (error) {

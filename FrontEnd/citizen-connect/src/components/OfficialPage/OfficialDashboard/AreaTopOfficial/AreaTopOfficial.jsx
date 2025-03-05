@@ -1,13 +1,13 @@
 import { React, useContext, useEffect, useState } from "react";
-import "./AdminDash.jsx";
 import { SidebarContext } from "../../../../context/SidebarContext.jsx";
 import { MdOutlineMenu } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-const AdminDash = () => {
+const AreaTopOfficial = () => {
   const { openSidebar } = useContext(SidebarContext);
   const navigate = useNavigate();
   const [name, setName] = useState("User");
+  const [location, setLocation] = useState()
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -24,6 +24,21 @@ const AdminDash = () => {
     };
     fetchUserName();
   }, []);
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const loggedInUser = JSON.parse(localStorage.getItem('user'));
+        if (loggedInUser && loggedInUser.location) {
+          setLocation(loggedInUser.location);
+        } else {
+          console.error("User location is not available in localStorage");
+        }
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+      }
+    };
+    fetchLocation();
+  }, []);
 
   return (
     <section className="content-area-top">
@@ -35,13 +50,13 @@ const AdminDash = () => {
         >
           <MdOutlineMenu size={24} />
         </button>
-        <h3 className="area-top-title">Home</h3>
+        <h3 className="area-top-title">Dashboard</h3>
       </div>
       <div className="area-top-2">
-        <p>Hello, {name}</p>
+        <p>Hello, {name}, {location} Government Official</p>
       </div>
     </section>
   );
 };
 
-export default AdminDash;
+export default AreaTopOfficial;

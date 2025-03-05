@@ -9,8 +9,8 @@ const TaskBoard = () => {
 
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedInUser && loggedInUser.user.location) {
-      setUserLocation(loggedInUser.user.location);
+    if (loggedInUser && loggedInUser.location) {
+      setUserLocation(loggedInUser.location);
     }
   }, []);
 

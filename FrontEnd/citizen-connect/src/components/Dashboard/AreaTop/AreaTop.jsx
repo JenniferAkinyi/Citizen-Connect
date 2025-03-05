@@ -13,8 +13,8 @@ const AreaTop = () => {
     const fetchUserName = async () => {
       try {
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
-        if (loggedInUser && loggedInUser.user.name) {
-          setName(loggedInUser.user.name);
+        if (loggedInUser && loggedInUser.name) {
+          setName(loggedInUser.name);
         } else {
           console.error("User name is not available in localStorage");
         }

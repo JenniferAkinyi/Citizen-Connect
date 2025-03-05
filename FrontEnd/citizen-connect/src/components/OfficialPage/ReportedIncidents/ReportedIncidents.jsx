@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from "react";
-import "./TaskBoard.css";
-import { fetchIncidents } from "../../../services/api";
-import { fetchPolls } from "../../../services/api";
+import "./ReportedIncidents.css";
+import { fetchIncidents} from "../../../services/api";
 
-const TaskBoard = () => {
+const ReportedIncidents = () => {
   const [incidents, setIncidents] = useState([]);
-  const [polls, setPolls] = useState([]);
+  const [userLocation, setUserLocation] = useState("");
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    if (loggedInUser && loggedInUser.location) {
+      setUserLocation(loggedInUser.location);
+    }
+  }, []);
 
   useEffect(() => {
     const getIncidents = async () => {
       try {
         const response = await fetchIncidents();
-        setIncidents(response.data);
+        const sortedIncidents = response.data
+          .filter((incident) => incident.location === userLocation)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setIncidents(sortedIncidents);
       } catch (error) {
         console.error("Error fetching incidents:", error);
       }
     };
-    getIncidents();
-  }, []);
+    if (userLocation) {
+      getIncidents();
+    }
+  }, [userLocation]);
 
-  useEffect(() => {
-    const getPolls = async () => {
-      try {
-        const response = await fetchPolls();
-        setPolls(response.data);
-      } catch (error) {
-        console.error("Error fetching polls:", error);
-      }
-    };
-    getPolls();
-  }, []);
 
   return (
     <section className="task-board">
       <div className="taskboard-right">
+        <h2>Recently Reported Incidents</h2>
         <div className="taskboard-report-card">
-          <h3>Recently Reported Incidents</h3>
           {Array.isArray(incidents) &&
             incidents.slice(0, 3).map((incident) => (
               <div key={incident.id} className="taskboard-report-card-item">
@@ -53,21 +53,8 @@ const TaskBoard = () => {
             ))}
         </div>
       </div>
-
-      {/* <div className="taskboard-left">
-          <div className="taskboard-recent-polls">
-            <h3>Recent Polls</h3>
-            {Array.isArray(polls) && polls.map((poll) => (
-              <div key={poll.id} className="taskboard-poll-card">
-                <h4>{poll.title}</h4>
-                <p>{poll.description}</p>
-                <p>{new Date(poll.createdAt).toLocaleDateString()}</p>
-              </div>
-            ))}
-          </div>
-        </div> */}
     </section>
   );
 };
 
-export default TaskBoard;
+export default ReportedIncidents;

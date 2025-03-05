@@ -13,6 +13,13 @@ import AdminRoute from "./components/AdminRoute/AdminRoute";
 import Incident from "./components/Report-Incident/Incident";
 import Polls from "./components/Polls/Polls";
 import AllIncidents from "./components/Incidents/AllIncidents";
+import { CreatePoll } from "./components";
+import PollMng from "./components/AdminPages/PollManagement/PollMng";
+import ReportedIncidents from "./components/OfficialPage/ReportedIncidents/ReportedIncidents";
+import OfficialRoute from "./components/OfficialRoute/OfficialRoute";
+import OfficialScreen from "./screens/officialDashboard/OfficialScreen";
+import Summary from "./components/OfficialPage/Summary/Summary";
+import IncidentDetails from "./components/OfficialPage/IncidentDetails/IncidentDetails";
 
 function App() {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -35,14 +42,62 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<PageNotFound />} />
             <Route path="/incident" element={<Incident />} />
-            <Route path="/poll" element={<Polls/>} />
-            <Route path="/allincidents" element={<AllIncidents/>} />
+            <Route path="/poll" element={<Polls />} />
+            <Route path="/allincidents" element={<AllIncidents />} />
             <Route
-              path="/dashboard"
+              path="/admindashboard"
               element={
                 <AdminRoute>
                   <AdminDashboard />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/createpoll"
+              element={
+                <AdminRoute>
+                  <CreatePoll />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/managepoll"
+              element={
+                <AdminRoute>
+                  <PollMng />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/officialdashboard"
+              element={
+                <OfficialRoute>
+                  <OfficialScreen />
+                </OfficialRoute>
+              }
+            />
+            <Route
+              path="/reportedincidents"
+              element={
+                <OfficialRoute>
+                  <ReportedIncidents />
+                </OfficialRoute>
+              }
+            />
+            <Route
+              path="/summary"
+              element={
+                <OfficialRoute>
+                  <Summary />
+                </OfficialRoute>
+              }
+            />
+            <Route
+              path="/view/:incidentId"
+              element={
+                <OfficialRoute>
+                  <IncidentDetails/>
+                </OfficialRoute>
               }
             />
           </Route>
