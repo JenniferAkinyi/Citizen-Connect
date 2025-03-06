@@ -48,9 +48,9 @@ jobs:
 
         - name: Deploy to S3
           run: |
-            aws s3 sync FrontEnd/citizen-connect/build s3://$AWS_S3_BUCKET --delete \
+            aws s3 sync FrontEnd/citizen-connect s3://$AWS_S3_BUCKET --delete \
             --cache-control "max-age=31536000"
 
-            aws s3 cp FrontEnd/citizen-connect/build/index.html s3://$AWS_S3_BUCKET/index.html \
+            aws s3 cp FrontEnd/citizen-connect/index.html s3://$AWS_S3_BUCKET/index.html \
             --content-type "text/html" \
             --cache-control "no-cache, no-store, must-revalidate"
