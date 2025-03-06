@@ -39,9 +39,6 @@ jobs:
             cd FrontEnd/citizen-connect
             npm run build
 
-        - name: Debug directory structure (Optional)
-          run: ls -R FrontEnd/citizen-connect/build
-
         - name: Configure AWS
           uses: aws-actions/configure-aws-credentials@v4
           with:
