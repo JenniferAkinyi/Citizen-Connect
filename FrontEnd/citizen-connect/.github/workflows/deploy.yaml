@@ -1,0 +1,55 @@
+name: Deploy React App to S3
+on: 
+    push:
+        branches: 
+            - main
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY}}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+    AWS_REGION: eu-north-1
+    AWS_S3_BUCKET: citizenconnectapp
+jobs:
+    build-and-deploy: 
+       runs-on: ubuntu-latest
+       steps:
+
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Setup nodejs
+          uses: actions/setup-node@v2
+          with:
+            node-version: '16'
+
+        - name: Cache dependencies
+          uses: actions/cache@v2
+          with: 
+            path: ~/.npm
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}    
+            restore-keys: |
+                ${{ runner.os }}-node-  
+
+        - name: install dependencies
+          run: npm ci
+
+        - name: Build React App
+          run:  npm run build -- --configuration production
+
+        - name: configure aws
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+
+        - name: Deploy to S3
+          run: |
+            # Sync all files to the S3 bucket
+            aws s3 sync ./build s3://$AWS_S3_BUCKET --delete \
+            --cache-control "max-age=31536000"
+
+            # Upload index.html separately to ensure it is not cached
+            aws s3 cp ./build/index.html s3://$AWS_S3_BUCKET/index.html \
+            --content-type "text/html" \
+            --cache-control "no-cache, no-store, must-revalidate"
+                      
