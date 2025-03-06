@@ -1,6 +1,6 @@
 import React from 'react'
 import AreaTop from '../../components/Dashboard/AreaTop/AreaTop';
-import Taskboard from '../../components/Dashboard/Taskboard/Taskboard';
+import Taskboard from '../../components/Dashboard/TaskBoard/TaskBoard';
 
 const DashboardScreen = () => {
   return (
