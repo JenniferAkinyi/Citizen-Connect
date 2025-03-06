@@ -5,7 +5,7 @@ import {
 } from "@aws-sdk/client-secrets-manager";
 
 const REGION = "us-east-1"; 
-const SECRET_NAME = "aws/secretsmanager"; 
+const SECRET_NAME = "rds!db-b82d6bfb-7ad9-4888-82d5-6ba68936becf"; 
 
 const secretsManagerClient = new SecretsManagerClient({ region: REGION });
 
