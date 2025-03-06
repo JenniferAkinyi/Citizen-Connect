@@ -28,7 +28,7 @@ jobs:
                 ${{ runner.os }}-node-  
 
         - name: install dependencies
-          run: npm install
+          run: cd Frontend/citizen-connect && npm install
 
         - name: Build React App
           run:  npm run build -- --configuration production
