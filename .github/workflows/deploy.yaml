@@ -48,13 +48,20 @@ jobs:
 
         - name: Deploy to S3
           run: |
-            aws s3 sync FrontEnd/citizen-connect s3://$AWS_S3_BUCKET --delete \
-            aws s3 cp ./build/vite.svg s3://$AWS_S3_BUCKET/vite.svg --content-type "image/svg+xml"
-            --cache-control "max-age=31536000"
+            # Sync the build folder to S3
+            aws s3 sync FrontEnd/citizen-connect/dist s3://$AWS_S3_BUCKET --delete \
+              --cache-control "max-age=31536000"
 
             # Ensure JavaScript files have the correct MIME type
-            find ./build -type f -name "*.js" -exec aws s3 cp {} s3://$AWS_S3_BUCKET/{} --content-type "application/javascript" \;
+            find FrontEnd/citizen-connect/dist -type f -name "*.js" -exec aws s3 cp {} s3://$AWS_S3_BUCKET/ --content-type "application/javascript" \;
 
-            aws s3 cp FrontEnd/citizen-connect/index.html s3://$AWS_S3_BUCKET/index.html \
-            --content-type "text/html" \
-            --cache-control "no-cache, no-store, must-revalidate"
+            # Upload vite.svg separately (if exists)
+            if [ -f FrontEnd/citizen-connect/dist/vite.svg ]; then
+              aws s3 cp FrontEnd/citizen-connect/dist/vite.svg s3://$AWS_S3_BUCKET/vite.svg --content-type "image/svg+xml"
+            fi
+
+            # Upload index.html separately to avoid caching issues
+            aws s3 cp FrontEnd/citizen-connect/dist/index.html s3://$AWS_S3_BUCKET/index.html \
+              --content-type "text/html" \
+              --cache-control "no-cache, no-store, must-revalidate"
+
