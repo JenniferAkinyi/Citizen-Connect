@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker build -t $IMAGE_NAME:$IMAGE_TAG -f ./Backend/Dockerfile
 
       - name: Tag and Push Docker image to ECR
         run: |
