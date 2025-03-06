@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./TaskBoard.css";
+import '../TaskBoard/TaskBoard.css';
 import { fetchIncidents, fetchPolls } from "../../../services/api";
 
 const TaskBoard = () => {
