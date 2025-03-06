@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = "https://3mqkw3nymx.us-east-1.awsapprunner.com/api";
 const api = axios.create({
   baseURL: API_URL,
   headers: {
