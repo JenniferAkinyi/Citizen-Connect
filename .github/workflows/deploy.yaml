@@ -25,22 +25,22 @@ jobs:
           uses: actions/cache@v3
           with: 
             path: ~/.npm
-            key: ${{ runner.os }}-node-${{ hashFiles('Frontend/citizen-connect/package-lock.json')}}    
+            key: ${{ runner.os }}-node-${{ hashFiles('FrontEnd/citizen-connect/package-lock.json')}}    
             restore-keys: |
                 ${{ runner.os }}-node-  
 
         - name: Install dependencies
           run: |
-            cd Frontend/citizen-connect
+            cd FrontEnd/citizen-connect
             npm install
 
         - name: Build React App
           run: |
-            cd Frontend/citizen-connect
+            cd FrontEnd/citizen-connect
             npm run build
 
         - name: Debug directory structure (Optional)
-          run: ls -R Frontend/citizen-connect/build
+          run: ls -R FrontEnd/citizen-connect/build
 
         - name: Configure AWS
           uses: aws-actions/configure-aws-credentials@v4
@@ -51,9 +51,9 @@ jobs:
 
         - name: Deploy to S3
           run: |
-            aws s3 sync Frontend/citizen-connect/build s3://$AWS_S3_BUCKET --delete \
+            aws s3 sync FrontEnd/citizen-connect/build s3://$AWS_S3_BUCKET --delete \
             --cache-control "max-age=31536000"
 
-            aws s3 cp Frontend/citizen-connect/build/index.html s3://$AWS_S3_BUCKET/index.html \
+            aws s3 cp FrontEnd/citizen-connect/build/index.html s3://$AWS_S3_BUCKET/index.html \
             --content-type "text/html" \
             --cache-control "no-cache, no-store, must-revalidate"
