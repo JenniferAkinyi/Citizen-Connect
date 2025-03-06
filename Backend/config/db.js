@@ -33,10 +33,10 @@ export const getAwsSecrets = async () => {
 
     const databaseUrl = `sqlserver://${secrets.username}:${encodeURIComponent(
       secrets.password
-    )}@${secrets.host}:${secrets.port || 1433}/${
-      secrets.database
-    }?encrypt=true&trustServerCertificate=false`;
-
+    )}@citizenconnect-db.cqn0860yopae.us-east-1.rds.amazonaws.com:${
+      secrets.port || 1433
+    }/${secrets.database}?encrypt=true&trustServerCertificate=false`;
+    
     return { ...secrets, DATABASE_URL: databaseUrl };
   } catch (error) {
     console.error("Error fetching AWS Secret:", error.message);
