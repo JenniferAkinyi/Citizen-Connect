@@ -35,7 +35,9 @@ app.use('/api/auth', authRouter);
 app.use('/api/incidents', incidentRouter)
 app.use('/api/polls', pollRouter)
 app.use('/api/votes', voteRouter)
-
+app.get('/api/healthcheck', (req, res) => {
+  res.send('Server is running');
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
