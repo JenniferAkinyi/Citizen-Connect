@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://3mqkw3nymx.us-east-1.awsapprunner.com/api";
+const API_URL = "http://localhost:5000/api";
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -32,7 +32,7 @@ export const resetPassword = async (data) => {
 };
 export const fetchIncidents = async () => {
   const response = await api.get('/incidents/all');
-  return response.data;
+  return response.data.data;
 };
 export const reportIncident = async (incidentData) => {
   const response = await api.post('/incidents/report', incidentData);
@@ -43,8 +43,8 @@ export const fetchIncidentById = async (incidentId) => {
   return response.data;
 };
 export const fetchPolls = async () => {
-  const response = await api.get('polls/all');
-  return response.data;
+  const response = await api.get('/polls/all');
+  return response.data.data;
 }
 export const createPoll = async (pollData) => {
   const response = await api.post('/polls/poll', pollData);

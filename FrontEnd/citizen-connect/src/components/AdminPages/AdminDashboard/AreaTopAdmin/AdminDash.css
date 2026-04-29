@@ -19,14 +19,3 @@
     flex-direction: row;
     align-items: center;
 }
-.sidebar-open-btn{
-    display: inline-flex;
-    align-items: center;
-    display: none;
-    margin-bottom: -1px;
-    color: var(--text-color-inverted);
-
-    @media (max-width: 768px){
-      display: inline-flex;
-    }
-}

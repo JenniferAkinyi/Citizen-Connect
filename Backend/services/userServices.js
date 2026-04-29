@@ -42,7 +42,6 @@ export async function createUser(name, email, password, location, role) {
 }
 
 export async function loginUserService(email, password) {
-
   try {
     const user = await prisma.users.findUnique({
       where: { email },
@@ -71,6 +70,7 @@ export async function loginUserService(email, password) {
       details: { id: user.id, email: user.email },
     };
   } catch (error) {
+    console.error('LOGIN SERVICE ERROR', error)
     return {
       code: 500,
       message: "Internal server error",

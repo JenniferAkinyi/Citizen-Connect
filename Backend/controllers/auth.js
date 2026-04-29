@@ -5,54 +5,74 @@ import asyncHandler  from "../middlewares/asyncHandler.js";
 import ErrorResponse from "../utils/ErrorResponse.js";
 
 export const register = asyncHandler(async (req, res, next) => {
-    const { name, email, password, location } = req.body;
+  const { name, email, password, location } = req.body;
+
+  try {
     const hashedPassword = await hashPassword(password);
 
     const user = await prisma.users.create({
-        data: {
-            name,
-            email,
-            password: hashedPassword,
-            location
-        },
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        location,
+        role: "user"
+      },
     });
+
     res.status(201).json({
-        message: "User registered successfully!",
+      message: "User registered successfully!",
     });
+
+  } catch (error) {
+    console.error("REGISTER ERROR:", error); 
+
+    if (error.code === "P2002") {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
 export const login = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
-
-    const user = await prisma.users.findUnique({
-        where: { email },
-    });
-
-    if (!user) {
-        return next(new ErrorResponse("Invalid credentials", 401));
+    try {
+      
+        const { email, password } = req.body;
+    
+        const user = await prisma.users.findUnique({
+            where: { email },
+        });
+    
+        if (!user) {
+            return next(new ErrorResponse("Invalid credentials", 401));
+        }
+    
+        const isPasswordValid = await comparePassword(password, user.password);
+    
+        if (!isPasswordValid) {
+            return next(new ErrorResponse("Invalid credentials", 401));
+        }
+    
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRATION }
+        );
+    
+        res.status(200).json({
+            message: "User logged in successfully!",
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                location: user.location,
+                role: user.role
+            },
+        });
+    } catch (error) {
+      console.error('LOGIN ERROR', error)
+      return res.status(500).json({message: error.message})
     }
-
-    const isPasswordValid = await comparePassword(password, user.password);
-
-    if (!isPasswordValid) {
-        return next(new ErrorResponse("Invalid credentials", 401));
-    }
-
-    const token = jwt.sign(
-        { id: user.id, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRATION }
-    );
-
-    res.status(200).json({
-        message: "User logged in successfully!",
-        token,
-        user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            location: user.location,
-            role: user.role
-        },
-    });
 });

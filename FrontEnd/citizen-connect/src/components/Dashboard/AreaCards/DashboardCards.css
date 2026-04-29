@@ -1,0 +1,32 @@
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background: var(--secondary-color);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--side-link-hover-color);
+  transition: var(--default-transition);
+}
+.card h3 {
+  color: var(--base-text-color);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* optional hover */
+.card:hover {
+  transform: translateY(-3px);
+}
