@@ -9,7 +9,6 @@ dotenv.config();
 
 // import routers
 import userRouter from './routes/user.router.js';
-import authRouter from './routes/auth.router.js';
 import incidentRouter from './routes/incident.router.js';
 import pollRouter from './routes/polls.router.js';
 import voteRouter from './routes/votes.router.js';
@@ -32,7 +31,6 @@ app.use(cors(
 app.use(morgan('dev'))
 
 app.use('/api/users', userRouter);
-app.use('/api/auth', authRouter);
 app.use('/api/incidents', incidentRouter)
 app.use('/api/polls', pollRouter)
 app.use('/api/votes', voteRouter)
