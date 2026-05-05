@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { allPolls, createPoll, deletePoll, fetchById, updatePoll } from "../controllers/polls.js";
+import { createPoll, fetchPolls, fetchPollById, editPoll, deletePoll} from "../controllers/pollController.js";
+import {authenticateUser} from "../middlewares/authMiddleware.js"
 
 const pollRouter = Router()
 
-pollRouter.post('/poll', createPoll)
-pollRouter.get('/all', allPolls)
-pollRouter.get('/:id', fetchById)
-pollRouter.patch('/:id', updatePoll)
-pollRouter.delete('/:id', deletePoll)
+pollRouter.post('/createpoll', authenticateUser, createPoll)
+pollRouter.get('/allpolls', fetchPolls)
+pollRouter.get('/:id', authenticateUser, fetchPollById)
+pollRouter.patch('/:id', authenticateUser, editPoll)
+pollRouter.delete('/:id', authenticateUser, deletePoll)
 
 export default pollRouter;

@@ -1,5 +1,4 @@
 import prisma from "../config/db.js";
-// import ErrorResponse from "../utils/ErrorResponse.js";
 
 export async function reportIncidentService(
   title,
@@ -8,7 +7,7 @@ export async function reportIncidentService(
   status,
   category,
   media,
-  userId
+  userId,
 ) {
   try {
     const incident = await prisma.incidentReport.create({
@@ -18,7 +17,11 @@ export async function reportIncidentService(
         location,
         status,
         category,
-        userId,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
         media: {
           create: media.map((m) => ({
             url: m.url,
@@ -41,104 +44,89 @@ export async function reportIncidentService(
       media: incident.media,
     };
   } catch (error) {
-    throw new Error("Error posting incident");
+    console.error("Prisma error:", error);
+    throw new Error(error.message);
   }
 }
-// export const allIncidents = asyncHandler(async (req, res, next) => {
-//   const incidents = await prisma.incidentReport.findMany({
-//     include: {
-//       media: true,
-//     },
-//   });
+export async function getIncidentsService() {
+  const incidents = await prisma.incidentReport.findMany({
+    include: {
+      media: {
+        select: {
+          url: true,
+          type: true,
+        },
+      },
+    },
+  });
+  return incidents;
+}
+export async function getIncidentByIdService(id) {
+  const incident = await prisma.incidentReport.findUnique({
+    where: { id },
+    include: {
+      media: true,
+    },
+  });
+  if (!incident) {
+    throw new Error("Incident not found");
+  }
+  return incident;
+}
+export async function editIncidentService(
+  id,
+  title,
+  description,
+  location,
+  status,
+  category,
+  media,
+) {
+  const existingIncident = await prisma.incidentReport.findUnique({
+    where: { id },
+  });
+  if (!existingIncident) {
+    throw new Error("Incident not found");
+  }
+  const editedIncident = await prisma.incidentReport.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      location,
+      status,
+      category,
+      media: {
+        deleteMany: {},
+        create: media.map((m) => ({
+          url: m.url,
+          type: m.type,
+        })),
+      },
+    },
+    include: {
+      media: true,
+    },
+  });
+  return {
+    title: editedIncident.title,
+    description: editedIncident.description,
+    location: editedIncident.location,
+    status: editedIncident.status,
+    category: editedIncident.category,
+    media: editedIncident.media,
+  };
+}
+export async function deleteIncidentService(id){
+  const existingIncident = await prisma.incidentReport.findUnique({
+    where: {id},
 
-//   if (incidents.length === 0) {
-//     return next(new ErrorResponse("No incidents available", 401));
-//   }
-//   res.status(201).json({
-//     message: "Incidents fetched successfully",
-//     data: incidents,
-//   });
-// });
-// export const fetchById = asyncHandler(async (req, res, next) => {
-//   const { id } = req.params;
-//   const incident = await prisma.incidentReport.findUnique({
-//     where: { id: id },
-//     include: {
-//       media: true,
-//     },
-//   });
-//   if (!incident) {
-//     return next(new ErrorResponse("Incident doesn't exist", 401));
-//   }
-//   res.status(201).json({
-//     message: "Incident fetched successfully",
-//     data: incident,
-//   });
-// });
-// export const updateIncident = asyncHandler(async (req, res, next) => {
-//   const { id } = req.params;
-//   const { title, description, location, status, category, media } = req.body;
-//   let incident = await prisma.incidentReport.findUnique({
-//     where: { id: id },
-//     include: {
-//       media: true,
-//     },
-//   });
-//   if (!incident) {
-//     return next(new ErrorResponse("Incident doesn't exist", 401));
-//   }
-//   const mediaUpdates = media
-//     .filter((m) => m.id)
-//     .map((m) => ({
-//       where: { id: m.id },
-//       data: {
-//         url: m.url,
-//         type: m.type,
-//       },
-//     }));
-
-//   const mediaCreations = media
-//     .filter((m) => !m.id)
-//     .map((m) => ({
-//       url: m.url,
-//       type: m.type,
-//     }));
-
-//   incident = await prisma.incidentReport.update({
-//     where: { id: id },
-//     data: {
-//       title,
-//       description,
-//       location,
-//       status,
-//       category,
-//       media: {
-//         update: mediaUpdates,
-//         create: mediaCreations,
-//       },
-//     },
-//     include: {
-//       media: true,
-//     },
-//   });
-//   res.status(201).json({
-//     message: "Incident updated successfully",
-//     data: incident,
-//   });
-// });
-// export const deleteIncident = asyncHandler(async (req, res, next) => {
-//   const { id } = req.params;
-//   const incident = await prisma.incidentReport.findUnique({
-//     where: { id: id },
-//   });
-//   if (!incident) {
-//     return next(new ErrorResponse("Incident doesn't exist", 401));
-//   }
-//   await prisma.incidentReport.delete({
-//     where: { id: id },
-//   });
-//   res.status(201).json({
-//     message: "Incident deleted successfully",
-//     data: incident,
-//   });
-// });
+  })
+  if(!existingIncident){
+    throw new Error("Incident not found")
+  }
+  const incident = await prisma.incidentReport.delete({
+    where: { id }
+  })
+  return{ message: "Incident deleted successfully"}
+}
