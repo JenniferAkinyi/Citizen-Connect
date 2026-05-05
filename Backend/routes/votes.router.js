@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { addVote, allVotes, changeVote, getUserVotes, deleteVote} from "../controllers/votes.js";
+import { addVote, changeVote, allVotes, fetchVoteById, deleteVote } from "../controllers/voteController.js";
+import {authenticateUser} from "../middlewares/authMiddleware.js"
 
 const voteRouter = Router()
 
-voteRouter.post('/vote', addVote)
-voteRouter.patch('/vote', changeVote)
-voteRouter.get('/user/:userId', getUserVotes);
-voteRouter.get('/all', allVotes)
-voteRouter.delete('/:id', deleteVote)
+voteRouter.post('/vote', authenticateUser,  addVote)
+voteRouter.patch('/vote', authenticateUser, changeVote)
+voteRouter.get('/allvotes', authenticateUser, allVotes);
+voteRouter.get('/:id', authenticateUser, fetchVoteById)
+voteRouter.delete('/:id', authenticateUser, deleteVote)
 
 export default voteRouter;
