@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../services/api";
+import { useUser } from "../../context/userContext";
 import "./Login.css";
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { setUser } = useUser()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,12 +33,13 @@ const Login = () => {
 
     try {
       const response = await login(email, password);
-      const user = response.data.user;
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("isLoggedIn", "true");
-      if (user.role === "admin") {
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setUser(data.user)
+      if (data.user.role === "admin") {
         navigate("/admindashboard");
-      } else if (user.role === "official") {
+      } else if (data.user.role === "official") {
         navigate("/officialdashboard");
       } else {
         navigate("/dashboard");

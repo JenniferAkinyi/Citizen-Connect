@@ -10,17 +10,21 @@ const api = axios.create({
 
 export const register = async (userData) => {
   const response = await api.post(
-    "/auth/register",
+    "/users/register",
     userData
   );
   return response;
 };
 export const login = async (email, password) => {
-    const response = await api.post("/auth/login", {
+    const response = await api.post("/users/login", {
     email: email,
     password: password,
     });
     return response;
+}
+export const fetchUsers = async () => {
+  const response = await api.get('/users/allusers')
+  return response.data.details
 }
 export const requestPasswordReset = async ( data) => {
   const response = await api.post('/users/request-password-reset', data);
@@ -31,8 +35,8 @@ export const resetPassword = async (data) => {
   return response;
 };
 export const fetchIncidents = async () => {
-  const response = await api.get('/incidents/all');
-  return response.data.data;
+  const response = await api.get('/incidents/allincidents');
+  return response.data.details;
 };
 export const reportIncident = async (incidentData) => {
   const response = await api.post('/incidents/report', incidentData);
@@ -43,8 +47,8 @@ export const fetchIncidentById = async (incidentId) => {
   return response.data;
 };
 export const fetchPolls = async () => {
-  const response = await api.get('/polls/all');
-  return response.data.data;
+  const response = await api.get('/polls/allpolls');
+  return response.data.details;
 }
 export const createPoll = async (pollData) => {
   const response = await api.post('/polls/poll', pollData);

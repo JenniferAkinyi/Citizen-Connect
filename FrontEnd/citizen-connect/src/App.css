@@ -85,6 +85,7 @@ body {
   font-family: var(--font-family-roboto);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
+  background-color: var(--background-color);
 }
 
 a {
@@ -126,20 +127,7 @@ ul {
   width: 24px;
 }
 
-.page-wrapper {
-  background-color: var(--background-color);
-  min-height: 100vh;
-  overflow: hidden;
-}
-
-.content-wrapper {
-  background-color: var(--background-color);
-  min-height: 100vh;
-  padding: 0px 50px;
-  margin-left: 260px;
-}
-
-@media (max-width: 1400px) {
+/* @media (max-width: 1400px) {
   .content-wrapper {
     padding: 20px;
   }
@@ -166,10 +154,10 @@ ul {
 }
 
 /* content */
-.content-area > section {
+/* .content-area > section {
   margin-bottom: 16px;
 }
 
 .content-area > section:last-child {
   margin-bottom: 0;
-}
+}  */

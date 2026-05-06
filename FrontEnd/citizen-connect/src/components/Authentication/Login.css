@@ -15,6 +15,7 @@ section {
   border-radius: 10px;
   background-color: #ffffff;
   max-width: 400px;
+  margin-top: 7rem;
 }
 .login-container form {
   display: flex;

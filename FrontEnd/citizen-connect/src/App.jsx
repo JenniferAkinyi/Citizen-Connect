@@ -1,7 +1,5 @@
 import { useContext, useEffect } from "react";
 import "./App.css";
-import { ThemeContext } from "./context/ThemeContext";
-import { DARK_THEME, LIGHT_THEME } from "./constants/ThemeConstants";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MoonIcon from "./assets/icons/moon.svg";
 import SunIcon from "./assets/icons/sun.svg";
@@ -25,16 +23,6 @@ import RequestPasswordReset from "./components/RequestReset/RequestPasswordReset
 import AIChat from "./components/AIChat/AIChat";
 
 function App() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    if (theme === DARK_THEME) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, [theme]);
-
   return (
     <>
       <Router>
@@ -108,17 +96,6 @@ function App() {
             />
           </Route>
         </Routes>
-
-        <button
-          type="button"
-          className="theme-toggle-btn"
-          onClick={toggleTheme}
-        >
-          <img
-            className="theme-icon"
-            src={theme === LIGHT_THEME ? SunIcon : MoonIcon}
-          />
-        </button>
       </Router>
     </>
   );

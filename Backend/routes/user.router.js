@@ -4,7 +4,7 @@ import {postUser, loginUser, fetchUsers, fetchById, updateUser, deleteUser} from
 const userRouter = Router();
 
 userRouter.post('/register', postUser)
-userRouter.get('/login', loginUser)
+userRouter.post('/login', loginUser)
 userRouter.get('/allusers', fetchUsers)
 userRouter.get('/:id', fetchById)
 userRouter.patch('/:id', updateUser)

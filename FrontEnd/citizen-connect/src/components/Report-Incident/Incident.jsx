@@ -99,12 +99,10 @@ const Incident = () => {
             <option value="">Select Category</option>
             <option value="corruption">Corruption</option>
             <option value="crime">Crime</option>
-            <option value="insecurity">Insecurity</option>
+            <option value="safety">Safety</option>
             <option value="natural disaster">Natural Disaster</option>
             <option value="power outage">Power Outage</option>
-            <option value="human rights violation">
-              Human Rights Violation
-            </option>
+            <option value="infrastructure">Infrastructure</option>
             <option value="other">Other</option>
           </select>
         </div>
