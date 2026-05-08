@@ -54,69 +54,19 @@ const Incident = () => {
   };
 
   return (
-    <div className="incident-form-container">
-      <h2>Report Incident</h2>
-      {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSubmit} className="incident-form">
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+    <div className="reporting">
+      <div className="reporting-heading">
+        <h2>Report a Civic Issue</h2>
+        <p>Your contribution helps to build a better county. Provide accurate details below to facilitate easy resolution.</p>
+      </div>
+      <div className="reporting-card">
+        <div className="reporting-left">
+          <p>left</p>
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          ></textarea>
+        <div className="reporting-right">
+          <p>right</p>
         </div>
-        <div className="form-group">
-          <label htmlFor="location">Location</label>
-          <input
-            type="text"
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            readOnly 
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="corruption">Corruption</option>
-            <option value="crime">Crime</option>
-            <option value="safety">Safety</option>
-            <option value="natural disaster">Natural Disaster</option>
-            <option value="power outage">Power Outage</option>
-            <option value="infrastructure">Infrastructure</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="mediaUrl">Media URL</label>
-          <input
-            type="text"
-            id="mediaUrl"
-            value={mediaUrl}
-            onChange={(e) => setMediaUrl(e.target.value)}
-          />
-        </div>
-        <button type="submit">Report Incident</button>
-      </form>
+      </div>
     </div>
   );
 };

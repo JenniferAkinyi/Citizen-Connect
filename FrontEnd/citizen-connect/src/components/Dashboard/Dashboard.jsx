@@ -1,18 +1,20 @@
 import React from 'react'
-import AreaTop from './AreaTop/AreaTop'
 import DashboardCard from './AreaCards/DashboardCards'
 import TaskBoard from './TaskBoard/TaskBoard'
 import FeaturedPoll from './FeaturedPoll/FeaturedPoll'
 import './Dashboard.css'
+import Actions from './Actions/Actions'
 
 const Dashboard = () => {
   return (
     <div>
-        <AreaTop />
         <DashboardCard />
         <div className="main2">
             <TaskBoard/>
-            <FeaturedPoll />
+            <div className="main2-side">
+              <Actions />
+              <FeaturedPoll />
+            </div>
         </div>
     </div>
   )

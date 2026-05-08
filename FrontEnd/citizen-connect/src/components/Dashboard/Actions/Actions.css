@@ -1,0 +1,39 @@
+.quick-actions{
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.heading{
+    font-size: 1rem;
+    font-weight: 700;
+    color: #006838;
+    margin-bottom: 1rem;
+}
+.buttons{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.incident-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: #006838;
+    color: white;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.map-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background-color: #006838;
+    color: white;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
