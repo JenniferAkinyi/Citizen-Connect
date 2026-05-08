@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { reportIncident } from "../../services/api";
 import "./Incident.css";
@@ -13,11 +13,25 @@ const Incident = () => {
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
+  const [step, setStep] = useState(1);
+  const detailsRef = useRef(null);
+  const locationRef = useRef(null);
+  const mediaRef = useRef(null);
+
+  const scrollToSection = (section, stepNumber) => {
+    setStep(stepNumber);
+
+    section.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   useEffect(() => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
     if (loggedInUser && loggedInUser.id) {
       setUserId(loggedInUser.id);
-      setLocation(loggedInUser.location); 
+      setLocation(loggedInUser.location);
     } else {
       console.error(error);
     }
@@ -57,14 +71,99 @@ const Incident = () => {
     <div className="reporting">
       <div className="reporting-heading">
         <h2>Report a Civic Issue</h2>
-        <p>Your contribution helps to build a better county. Provide accurate details below to facilitate easy resolution.</p>
+        <p>
+          Your contribution helps to build a better county. Provide accurate
+          details below to facilitate easy resolution.
+        </p>
       </div>
       <div className="reporting-card">
         <div className="reporting-left">
-          <p>left</p>
+          <div className="stepper">
+            <div className="step-wrapper">
+              <div
+                className={`step ${step === 1 ? "active" : ""}`}
+                onClick={() => scrollToSection(detailsRef, 1)}
+              >
+                <div className="circle">1</div>
+                <div className="label">Details & Category</div>
+              </div>
+              <div className="line" />
+            </div>
+
+            <div className="step-wrapper">
+              <div
+                className={`step ${step === 2 ? "active" : ""}`}
+                onClick={() => scrollToSection(locationRef, 2)}
+              >
+                <div className="circle">2</div>
+                <div className="label">Location</div>
+              </div>
+              <div className="line" />
+            </div>
+
+            <div className="step-wrapper">
+              <div
+                className={`step ${step === 3 ? "active" : ""}`}
+                onClick={() => scrollToSection(mediaRef, 3)}
+              >
+                <div className="circle">3</div>
+                <div className="label">Media Upload</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="reporting-right">
-          <p>right</p>
+          <div className="reporting-right">
+            <div ref={detailsRef} className="form-section">
+              <h3>Step 1: Incident Details</h3>
+              <div className="title-category">
+                <div className="form-group">
+                  <label htmlFor="title">Title</label>
+                  <input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Title"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="category">Category</label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <option value="">Select Category</option>
+                    <option value="crime">Crime</option>
+                    <option value="infrastructure">Infrastructure</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Description"
+                />
+              </div>
+            </div>
+
+            <div ref={locationRef} className="form-section">
+              <h3>Location</h3>
+              <input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
+
+            <div ref={mediaRef} className="form-section">
+              <h3>Media Upload</h3>
+              <input
+                value={mediaUrl}
+                onChange={(e) => setMediaUrl(e.target.value)}
+                placeholder="Image URL"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -13,5 +13,100 @@
 .reporting-card{
   display: grid;
   grid-template-columns: 1fr 5fr;
+  gap: 20px;
   margin-top: 2rem;
+}
+.reporting-card {
+  display: flex;
+  gap: 20px;
+}
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+.circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  color: #555;
+  background: white;
+  transition: 0.2s ease;
+}
+.label {
+  font-size: 0.85rem;
+  color: #333;
+}
+.line {
+  width: 1px;
+  height: 20px;
+  background: gray;
+  margin-left: 25px;
+  margin-top: -4px;
+  margin-bottom: -15px;
+}
+.step.active .circle {
+  background-color: #006838;
+  border-color: #006838;
+  color: white;
+}
+.step.active .label {
+  color: #006838;
+  font-weight: 600;
+}
+
+.step:hover {
+  background-color: rgba(0, 104, 56, 0.05);
+}
+
+.reporting-right {
+  flex: 1;
+  max-height: 500px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.title-category{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+ .form-group input,
+.form-group textarea ,.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-group textarea {
+  resize: vertical;
+} 
+
+.form-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: white;
 }
