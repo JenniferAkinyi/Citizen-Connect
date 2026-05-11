@@ -7,6 +7,9 @@ const TaskBoard = () => {
   const [incidents, setIncidents] = useState([]);
   const [userLocation, setUserLocation] = useState("");
   const [selected, setSelected] = useState("Filter Category");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const incidentsPerPage = 3;
   const { user } = useUser();
 
   useEffect(() => {
@@ -31,8 +34,6 @@ const TaskBoard = () => {
           })
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setIncidents(filteredIncidents);
-        setIncidents(sortedIncidents);
-        console.log(sortedIncidents);
       } catch (error) {
         console.error("Error fetching incidents:", error);
       }
@@ -41,6 +42,16 @@ const TaskBoard = () => {
       getIncidents();
     }
   }, [userLocation, selected]);
+  const indexOfLastIncident = currentPage * incidentsPerPage;
+
+  const indexOfFirstIncident = indexOfLastIncident - incidentsPerPage;
+
+  const currentIncidents = incidents.slice(
+    indexOfFirstIncident,
+    indexOfLastIncident,
+  );
+
+  const totalPages = Math.ceil(incidents.length / incidentsPerPage);
 
   return (
     <div className="taskboard">
@@ -51,7 +62,7 @@ const TaskBoard = () => {
             value={selected}
             onChange={(e) => setSelected(e.target.value)}
           >
-            <option value="">Filter Category</option>
+            <option value="">All Incidents</option>
             <option value="corruption">Corruption</option>
             <option value="crime">Crime</option>
             <option value="safety">Safety</option>
@@ -63,31 +74,62 @@ const TaskBoard = () => {
         </div>
       </div>
       <div className="taskboard-right">
-        {Array.isArray(incidents) &&
-          incidents.slice(0, 3).map((incident) => (
+        {incidents.length === 0 ? (
+          <div className="no-incidents">
+            <p>No incidents in this category reported.</p>
+          </div>
+        ) : (
+          currentIncidents.map((incident) => (
             <div key={incident.id} className="taskboard-report-card1">
               {incident.media?.length > 0 && (
                 <img src={incident.media[0].url} alt="incident" />
               )}
+
               <div className="report-content">
                 <div className="incident-info">
                   <div className="info-left">
                     <p className="category">{incident.category}</p>
+
                     <p className="date">
                       {new Date(incident.createdAt).toLocaleDateString()}
                     </p>
                   </div>
+
                   <div className="info-right">
                     <p className={`status ${incident.status.toLowerCase()}`}>
                       {incident.status}
                     </p>
                   </div>
                 </div>
+
                 <h4>{incident.title}</h4>
+
                 <p className="desc">{incident.description}</p>
               </div>
             </div>
-          ))}
+          ))
+        )}
+        {incidents.length > incidentsPerPage && (
+          <div className="pagination">
+            <button
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

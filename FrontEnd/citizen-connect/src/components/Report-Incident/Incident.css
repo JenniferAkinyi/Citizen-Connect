@@ -81,11 +81,32 @@
   overflow-y: auto;
   scroll-behavior: smooth;
 }
+.title-step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.icon{
+  color: #006838;
+}
 .title-category{
   display: flex;
+  justify-content: space-between;
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
+}
+.title-group label{
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+#title-group input, #title-group select{
+  width: 500px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .form-group label {
   display: block;
@@ -101,12 +122,28 @@
 }
 .form-group textarea {
   resize: vertical;
+  height: 100px;
 } 
-
-.form-section {
+.form-section{
   margin-bottom: 40px;
   padding: 20px;
   border: 1px solid #eee;
   border-radius: 10px;
   background: white;
+}
+.form-section input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.submition{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.submition p{
+  font-size: 0.8rem;
+  color: #333;
 }

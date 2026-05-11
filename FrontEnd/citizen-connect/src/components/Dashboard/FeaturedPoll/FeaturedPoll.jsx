@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchPolls } from "../../../services/api";
+import { fetchPolls, addVote } from "../../../services/api";
 import "./FeaturedPoll.css";
 
 const FeaturedPoll = () => {
@@ -9,16 +9,10 @@ const FeaturedPoll = () => {
     const getPolls = async () => {
       try {
         const response = await fetchPolls();
-
-        // get only active polls
         const activePolls = response.filter((poll) => poll.status === "active");
-
-        // sort newest first
         const sortedPolls = activePolls.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
-
-        // get most recent
         if (sortedPolls.length > 0) {
           setPoll(sortedPolls[0]);
         }
@@ -29,7 +23,6 @@ const FeaturedPoll = () => {
 
     getPolls();
   }, []);
-
   const getDaysRemaining = (expiresAt) => {
     const today = new Date();
     const expiry = new Date(expiresAt);

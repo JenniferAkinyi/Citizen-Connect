@@ -37,6 +37,7 @@
   border-radius: 12px;
   border: 1px solid grey;
   width: 100%;
+  margin-bottom: 10px;
 }
 .taskboard-report-card1 img {
   width: 170px;
@@ -49,8 +50,9 @@
   flex-direction: column;
   gap: 6px;
   text-align: left;
+  width: 100%;
 }
-.report-content .incident-info{
+.incident-info{
   display: flex;
   gap: 10px;
   align-items: center;
@@ -108,4 +110,39 @@
 .report-content .date {
   font-size: 0.8rem;
   color: #aaa;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #006838;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.pagination button:hover {
+  opacity: 0.9;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.no-incidents {
+  width: 100%;
+  padding: 30px;
+  border: 1px dashed #ccc;
+  border-radius: 12px;
+  text-align: center;
+  background: #fafafa;
+  color: #777;
 }

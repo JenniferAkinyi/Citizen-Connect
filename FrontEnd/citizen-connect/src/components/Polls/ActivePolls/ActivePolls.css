@@ -1,0 +1,15 @@
+.polls-heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.view-polls{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+.polls-heading h3, p{
+    color: grey;
+}

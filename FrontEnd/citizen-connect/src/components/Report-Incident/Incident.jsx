@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { reportIncident } from "../../services/api";
+import { CiSquareAlert } from "react-icons/ci";
+import { FaLocationDot, FaCamera } from "react-icons/fa6";
 import "./Incident.css";
 
 const Incident = () => {
@@ -45,19 +47,21 @@ const Incident = () => {
       description,
       location,
       category,
-      status: "pending",
       userId,
       media: mediaUrl ? [{ url: mediaUrl, type: "image" }] : [],
     };
 
     try {
-      const response = await reportIncident(incidentData);
+      await reportIncident(incidentData);
+
       setMessage("Incident reported successfully!");
+
       setTitle("");
       setDescription("");
       setLocation("");
       setCategory("");
       setMediaUrl("");
+
       setTimeout(() => {
         navigate("/dashboard");
       }, 500);
@@ -115,9 +119,12 @@ const Incident = () => {
         <div className="reporting-right">
           <div className="reporting-right">
             <div ref={detailsRef} className="form-section">
-              <h3>Step 1: Incident Details</h3>
+              <h3 className="title-step">
+                <CiSquareAlert className="icon" />
+                Step 1: Incident Details
+              </h3>
               <div className="title-category">
-                <div className="form-group">
+                <div id="title-group">
                   <label htmlFor="title">Title</label>
                   <input
                     value={title}
@@ -125,15 +132,20 @@ const Incident = () => {
                     placeholder="Title"
                   />
                 </div>
-                <div className="form-group">
+                <div id="title-group">
                   <label htmlFor="category">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     <option value="">Select Category</option>
+                    <option value="corruption">Corruption</option>
                     <option value="crime">Crime</option>
+                    <option value="safety">Safety</option>
+                    <option value="natural disaster">Natural Disaster</option>
+                    <option value="power outage">Power Outage</option>
                     <option value="infrastructure">Infrastructure</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
               </div>
@@ -148,20 +160,36 @@ const Incident = () => {
             </div>
 
             <div ref={locationRef} className="form-section">
-              <h3>Location</h3>
-              <input
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
+              <h3 className="title-step">
+                <FaLocationDot className="icon" />
+                Step 2: Location
+              </h3>
+              <div className="form-group">
+                <label htmlFor="location">Location</label>
+                <input
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </div>
             </div>
-
             <div ref={mediaRef} className="form-section">
-              <h3>Media Upload</h3>
+              <h3 className="title-step">
+                <FaCamera className="icon" />
+                Step 3: Upload Photos
+              </h3>
               <input
                 value={mediaUrl}
                 onChange={(e) => setMediaUrl(e.target.value)}
                 placeholder="Image URL"
               />
+            </div>
+            <div className="form-section">
+              <div className="submition">
+                <p>Thank you for filling up the form</p>
+                <button className="submit-btn" onClick={handleSubmit}>
+                  Submit report
+                </button>
+              </div>
             </div>
           </div>
         </div>

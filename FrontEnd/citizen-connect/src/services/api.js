@@ -7,6 +7,15 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 export const register = async (userData) => {
   const response = await api.post(
@@ -39,8 +48,18 @@ export const fetchIncidents = async () => {
   return response.data.details;
 };
 export const reportIncident = async (incidentData) => {
-  const response = await api.post('/incidents/report', incidentData);
-  return response;
+  const token = localStorage.getItem("token");
+  const response = await api.post(
+    "/incidents/report",
+    incidentData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
 };
 export const fetchIncidentById = async (incidentId) => {
   const response = await api.get(`/incidents/${incidentId}`);
@@ -51,8 +70,8 @@ export const fetchPolls = async () => {
   return response.data.details;
 }
 export const createPoll = async (pollData) => {
-  const response = await api.post('/polls/poll', pollData);
-  return response;
+  const response = await api.post('/polls/createpoll', pollData);
+  return response.data;
 }
 export const deletePoll = async (pollId) => {
   const response = await api.delete(`/polls/${pollId}`);
