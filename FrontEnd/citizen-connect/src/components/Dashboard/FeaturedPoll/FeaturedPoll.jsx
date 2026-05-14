@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchPolls, addVote } from "../../../services/api";
+import { fetchPolls, castVote } from "../../../services/api";
 import "./FeaturedPoll.css";
 
 const FeaturedPoll = () => {

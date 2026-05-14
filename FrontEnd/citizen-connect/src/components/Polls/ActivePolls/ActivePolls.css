@@ -27,16 +27,14 @@
 }
 
 .polls-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
-
 .poll-card {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 18px;
-  transition: 0.2s ease;
 }
 .poll-top {
   display: flex;
@@ -44,7 +42,6 @@
   align-items: center;
   margin-bottom: 12px;
 }
-
 .poll-status {
   padding: 5px 10px;
   border-radius: 30px;
@@ -52,7 +49,6 @@
   font-weight: 600;
   text-transform: capitalize;
 }
-
 .poll-status.active {
   background: rgba(0, 128, 0, 0.1);
   color: green;
@@ -96,7 +92,13 @@
   cursor: pointer;
   transition: 0.2s ease;
 }
+.vote-btn.edit-vote {
+  background: #2563eb;
+}
 
+.vote-btn.edit-vote:hover {
+  background: #1d4ed8;
+}
 .vote-btn:hover {
   background: #00552d;
 }

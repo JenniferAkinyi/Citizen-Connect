@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { fetchPolls } from "../../../services/api";
 import "./ActivePolls.css";
+import VoteModal from "../VoteModal/VoteModal";
 
 const ActivePolls = () => {
   const [polls, setPolls] = useState([]);
+  const [selectedPoll, setSelectedPoll] = useState(null);
   const getDaysLeft = (expiresAt) => {
     const today = new Date();
     const expiry = new Date(expiresAt);
@@ -47,6 +49,7 @@ const ActivePolls = () => {
     };
     getPolls();
   }, []);
+  const votedPolls = JSON.parse(localStorage.getItem("votedPolls")) || [];
 
   return (
     <div className="polls">
@@ -67,7 +70,16 @@ const ActivePolls = () => {
               </div>
               <h4>{poll.question}</h4>
               <p className="poll-description">{poll.description}</p>
-              <button className="vote-btn">Cast Your Vote</button>
+              <button
+                className={`vote-btn ${
+                  votedPolls.includes(poll.id) ? "edit-vote" : ""
+                }`}
+                onClick={() => setSelectedPoll(poll)}
+              >
+                {votedPolls.includes(poll.id)
+                  ? "Edit Your Vote"
+                  : "Cast Your Vote"}
+              </button>
             </div>
           ))
         ) : (
@@ -76,6 +88,12 @@ const ActivePolls = () => {
           </div>
         )}
       </div>
+      {selectedPoll && (
+        <VoteModal
+          poll={selectedPoll}
+          closeModal={() => setSelectedPoll(null)}
+        />
+      )}
     </div>
   );
 };
